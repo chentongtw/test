@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>  
+        <meta charset="utf-8" />
+        <title>1a2b</title>
+        <link rel="stylesheet" type="text/css" href="1a2b.css">
+    </head>
+    <body>
+        
+        <div class="title">1A2B</div>
+        <div class="list1">
+            <div class="number" onclick="push('1')">1</div>
+            <div class="number" onclick="push('2')">2</div>
+            <div class="number" onclick="push('3')">3</div>
+            <div class="number" onclick="push('4')">4</div>
+            <div class="number" onclick="push('5')">5</div>
+            <div class="number" onclick="push('6')">6</div>
+            <div class="number" onclick="push('7')">7</div>
+            <div class="number" onclick="push('8')">8</div>
+            <div class="number" onclick="push('9')">9</div>
+            <div class="number" onclick="push('0')">0</div>
+        </div>
+        
+        <div class="list2">
+            <span class="title">你的答案</span>
+            <div class="number2" id="ans" style="font-size: 35px;"></div>
+            <span class="title" style="background-color: rgb(236, 187, 167);cursor:pointer;" onclick="sendAns()">送出</span>
+            <span class="title" style="cursor:pointer;" onclick="deleteNum()">刪除</span>
+        </div>
+        <div class="list2">
+            <div id="history" class="historyContent"></div>
+        </div>
+        
+        <script>
+            let s="",corretAns=[],t="",arr = [0,1,2,3,4,5,6,7,8,9],len = arr.length;
+            let userAns=document.querySelector("#ans");
+            let userHistory=document.querySelector("#history");
+            while(len>6){
+                let j = Math.floor(Math.random()*len);
+                corretAns[10-len] = arr[j];
+                let t = arr[--len];
+                arr[len] = arr[j];
+                arr[j] = t;
+            }
+            console.log(corretAns);
+
+//            document.querySelector(".number").onclick = function() {
+//                push(this.textContent)
+//                console.log(this)
+//            };
+
+            function push(elem){
+                s+=elem;
+                userAns.textContent=s;
+                if(s.length>4){
+                    ans.style.color="red";
+                }
+                else{
+                    ans.style.color=" rgb(75, 56, 33)";
+                }
+            }
+            function deleteNum(){
+                s="";
+                userAns.textContent=s;
+            }
+            function sendAns(){
+                let a=0,b=0;
+                if(s.length>4) return 0;
+                for(let i=0;i<4;i++){
+                    for(let j=0;j<4;j++){
+                        if(i==j){
+                            if(s[i]==corretAns[j]){
+                                a++;
+                            }
+                        }
+                        else{
+                            if(s[i]==corretAns[j]){
+                                b++;
+                            }
+                            if(s[i]==s[j]){
+                                ans.style.color="red";
+                                return 0;
+                            }
+                        }
+                    }
+                }
+                if(a==4){
+                    userHistory.textContent="恭喜答對!!!";
+                    ans.style.color="rgb(22 163 199)";
+                }
+                else{
+                    userHistory.innerHTML+=s+" -------- "+a+"A"+b+"B"+"<br>";
+                    //userHistory.textContent+=s+" -------- "+a+"A"+b+"B";
+                    
+                    console.log("a = ",a,", b = ",b,"\n");
+                    s="";
+                    userAns.textContent=s;
+                }
+            }
+        </script>
+    </body>
+</html>

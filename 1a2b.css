@@ -1,0 +1,85 @@
+.title{
+    font-size: 30px;
+    font-weight: 600;
+    background-color: rgb(233, 220, 203);
+    color: rgb(75, 56, 33);
+    width: 190px;margin: 10px;
+    text-align: center;
+    border-radius: 5px;
+    display: block;
+}
+.list1{
+    display: flex;
+    justify-content: center;
+}
+.list2{
+    display: flex;
+    justify-content: center;
+}
+.number{
+    font-size: 45px;
+    font-weight: 700;
+    background-color: bisque;
+    color: rgb(75, 56, 33);
+    width: 65px;margin: 10px;
+    text-align: center;
+    border-radius: 5px;
+    cursor:pointer;
+}
+.number2{
+    font-size: 45px;
+    font-weight: 700;
+    background-color: rgb(255, 196, 207);
+    color: rgb(75, 56, 33);
+    width: 350px;margin: 10px;
+    text-align: center;
+    border-radius: 5px;
+}
+.delete{
+    font-size: 35px;
+    font-weight: 600;
+    background-color: rgb(205, 205, 205);
+    color: rgb(75, 56, 33);
+    width: 150px;margin-right: 20px;height: 40px;
+    text-align: center;
+    border-radius: 5px;
+}
+.historyContent{
+    font-size: 30px;
+    font-weight: 600;
+    background-color: #e2cece;
+    color: rgb(75, 56, 33);
+    width: 500px;height: 500px;
+    text-align: center;
+    border-radius: 5px;
+    padding-top: 7px;
+    margin-top: 8px;
+}
+@media (max-width:860px){
+    .list1{
+        flex-wrap:wrap;
+    }
+    .number{
+        width:120px;
+    }
+}
+@media (max-width:775px){
+    .number{
+        width:100px;
+    }
+}
+@media (max-width:700px){
+    .list2{
+        flex-wrap: wrap;
+    }
+}
+@media (max-width:672px){
+    .number{
+        width:80px;
+    }
+}
+@media (max-width:535px){
+    .number{
+        width:60px;
+    }
+}
