@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>  
+        <meta charset="utf-8" />
+        <title>ooxx</title>
+        <link rel="stylesheet" type="text/css" href="ooxx.css">
+    </head>
+    <body>
+        <div class="c">
+            <div class="end">OOXX</div>
+        </div>
+        <div class="c">
+            <table border="1" width="300" cellpadding="10" class="form">
+                <tr>
+                    <td id="tb00" onclick="tap(this,0,0)">&nbsp;</td>
+                    <td id="tb01" onclick="tap(this,0,1)">&nbsp;</td>
+                    <td id="tb02" onclick="tap(this,0,2)">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td id="tb10" onclick="tap(this,1,0)">&nbsp;</td>
+                    <td id="tb11" onclick="tap(this,1,1)">&nbsp;</td>
+                    <td id="tb12" onclick="tap(this,1,2)">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td id="tb20" onclick="tap(this,2,0)">&nbsp;</td>
+                    <td id="tb21" onclick="tap(this,2,1)">&nbsp;</td>
+                    <td id="tb22" onclick="tap(this,2,2)">&nbsp;</td>
+                </tr>
+            </table>
+            <div class="down">
+                <div class="choose" onclick="first()" onmouseover="over(this)" onmouseout="out(this)">先攻</div>
+                <div class="choose" onclick="after()" onmouseover="over(this)" onmouseout="out(this)">後攻</div>
+            </div>
+        </div>
+        <div class="c">
+            <div class="end" id="endText"></div>
+        </div>
+        <script>
+            let round=105,myTrun = false, ox=[['','',''],['','',''],['','','']], tb=[[tb00,tb01,tb02],[tb10,tb11,tb12],[tb20,tb21,tb22]];
+            
+            function first(){
+                myTrun = true;
+                round = 0;
+            }
+            function after(){
+                round = 0;
+                smartDecide();
+                myTrun = true;
+            }
+            function whoWin(a,b){
+                if(ox[a][b]=="X"){
+                    endText.textContent=("winner is me");
+                    endText.style.backgroundColor="#d8dbee"
+                    round=100;
+                }
+                else if(ox[a][b]=="O"){
+                    endText.textContent=("winner is you");
+                    endText.style.backgroundColor="#edbbcc"
+                    round=100;
+                }
+            }
+            function aLine(){
+                for(let i=0;i<3;i++){
+                    if(ox[i][0]==ox[i][1]&&ox[i][1]==ox[i][2]){
+                        whoWin(i,0);
+                    }
+                    else if(ox[0][i]==ox[1][i]&&ox[1][i]==ox[2][i]){
+                        whoWin(0,i);
+                    }
+                }
+                if(ox[0][0]==ox[1][1]&&ox[1][1]==ox[2][2]){
+                    whoWin(1,1);
+                }
+                else if(ox[0][2]==ox[1][1]&&ox[1][1]==ox[2][0]){
+                    whoWin(1,1);
+                }
+                if(round<100&&round>8){
+                    endText.textContent="Tie #-#"
+                }
+            }
+            function decide(){
+                let a=Math.floor(Math.random()*3), b=Math.floor(Math.random()*3);
+                ox[a][b]="X";
+                tb[a][b].textContent="X";
+                round++;
+                aLine();
+            }
+            function smartDecide(){
+                let point=[[2,0,2],[0,0,0],[2,0,2]], t=round, now, big=-999, choice, bigList=[], x=[1,4,-3,30],oORx=["O","X"];
+                if(round>8){
+                    console.log("END");
+                    if(round<100){
+                        endText.textContent="Tie #-#"
+                    }
+                    return 0;
+                }
+                for(let i=0;i<3;i++){
+                    for(let j=0;j<3;j++){
+                        if(ox[i][j]=="O"||ox[i][j]=="X"){ 
+                            let plus=x[0];
+                            now = (ox[i][j]=="X")? 1:0;
+                            for(let k=0;k<3;k++) {   //水平方向
+                                if(k==j) continue;
+                                if(ox[i][k]==oORx[now]){
+                                    plus+=x[1];
+                                    if(now==1) plus+=x[3]
+                                }
+                                else if(ox[i][k]==oORx[(now+1)%2]) plus+=x[2];
+                            }
+                            for(let k=0;k<3;k++) {
+                                point[i][k]+=plus;
+                            }
+                            
+                            plus=x[0];
+                            for(let k=0;k<3;k++) {    //垂直方向
+                                if(k==i) continue;
+                                if(ox[k][j]==oORx[now]){
+                                    plus+=x[1];
+                                    if(now==1) plus+=x[3]
+                                }
+                                else if(ox[k][j]==oORx[(now+1)%2]) plus+=x[2];
+                            }
+                            for(let k=0;k<3;k++) {
+                                point[k][j]+=plus;
+                            }
+                            if(i==j){
+                                plus=x[0];
+                                for(let k=0;k<3;k++) {      //往右下的斜直線
+                                    if(i==k) continue;
+                                    if(ox[k][k]==oORx[now]){
+                                        plus+=x[1];
+                                        if(now==1) plus+=x[3]
+                                    }
+                                    else if(ox[k][k]==oORx[(now+1)%2]) plus+=x[2];
+                                }
+                                for(let k=0;k<3;k++) {
+                                    point[k][k]+=plus;
+                                }
+                            }
+                            else if(i+j==2){
+                                plus=x[0];
+                                for(let k=0;k<3;k++) {       //往左下的斜直線
+                                    if(k==j) continue;
+                                    if(ox[2-k][k]==oORx[now]){
+                                        plus+=x[1];
+                                        if(now==1) plus+=x[3]
+                                    }
+                                    else if(ox[2-k][k]==oORx[(now+1)%2]) plus+=x[2];
+                                }
+                                for(let k=0;k<3;k++) {
+                                    point[2-k][k]+=plus;
+                                }
+                            }
+                        }
+                    }
+                }
+                for(let i=0;i<3;i++){     //找最高的分數
+                    for(let j=0;j<3;j++){
+                        if(ox[i][j]!="X"&&ox[i][j]!="O") {
+                            if(point[i][j]>big){
+                                big=point[i][j];
+                                bigList=[];
+                                bigList.push([i,j]);
+                            }
+                            else if(point[i][j]==big){
+                                bigList.push([i,j]);
+                            }
+                        }
+                        else{
+                            point[i][j]=-999
+                        }
+                    }
+                }
+                console.log(point)
+                choice = Math.floor(Math.random()*bigList.length);
+                tb[bigList[choice][0]][bigList[choice][1]].textContent="X";
+                ox[bigList[choice][0]][bigList[choice][1]]="X";
+                round++;
+                aLine();
+            }
+            function tap(elem,a,b){
+                if(myTrun&&elem.textContent!="X"&&elem.textContent!="O"&&round<=8){
+                    elem.textContent="O";
+                    console.log(1);
+                    ox[a][b]="O";
+                    round++;
+                    aLine();
+                    //decide();
+                    smartDecide();
+                }
+                else if(round<100){
+                    endText.textContent="Tie #-#"
+                }
+                return 0;
+            }
+            function over(elem){
+                elem.style.backgroundColor="#c6b287";
+            }
+            function out(elem){
+                elem.style.backgroundColor="rgb(220, 193, 131)";
+            }
+        </script>
+    </body>
+</html>
